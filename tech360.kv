@@ -1,0 +1,249 @@
+#:kivy 2.1.0
+
+<NavBar@BoxLayout>:
+    size_hint_y: None
+    height: "50dp"
+    spacing: "6dp"
+    padding: "6dp"
+    canvas.before:
+        Color:
+            rgba: 0.2,0.6,0.86,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Button:
+        text: "Articles"
+        background_color: 0.3,0.7,0.9,1
+        color: 1,1,1,1
+        on_release: app.root.current = "articles"
+    Button:
+        text: "Ventes"
+        background_color: 0.3,0.7,0.9,1
+        color: 1,1,1,1
+        on_release: app.root.current = "ventes"
+    Button:
+        text: "Caisse"
+        background_color: 0.3,0.7,0.9,1
+        color: 1,1,1,1
+        on_release: app.root.current = "caisse"
+    Button:
+        text: "Inventaire"
+        background_color: 0.3,0.7,0.9,1
+        color: 1,1,1,1
+        on_release: app.root.current = "inventaire"
+    Button:
+        text: "Paramètres"
+        background_color: 0.3,0.7,0.9,1
+        color: 1,1,1,1
+        on_release: app.root.current = "param"
+    Button:
+        text: "Historique"
+        background_color: 0.3,0.7,0.9,1
+        color: 1,1,1,1
+        on_release: app.root.current = "historique"
+    Button:
+        text: "Rapport"
+        background_color: 0.3,0.7,0.9,1
+        color: 1,1,1,1
+        on_release: app.root.current = "rapport"
+
+<ScreenTemplate@BoxLayout>:
+    orientation: "vertical"
+    NavBar:
+
+<ArticlesScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        ScreenTemplate:
+        BoxLayout:
+            orientation: "vertical"
+            padding: 10
+            spacing: 10
+            RecycleView:
+                id: rv_articles
+                viewclass: "Label"
+                RecycleBoxLayout:
+                    default_size: None, dp(40)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: 'vertical'
+            BoxLayout:
+                size_hint_y: None
+                height: "50dp"
+                spacing: 6
+                Button:
+                    text: "Ajouter"
+                    background_color: 0.1,0.7,0.3,1
+                    on_release: root.show_add_dialog()
+                Button:
+                    text: "Modifier"
+                    background_color: 0.9,0.6,0.1,1
+                    on_release: root.show_edit_dialog()
+                Button:
+                    text: "Supprimer"
+                    background_color: 0.9,0.1,0.1,1
+                    on_release: root.delete_selected()
+
+<VentesScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        ScreenTemplate:
+        BoxLayout:
+            orientation: "vertical"
+            padding: 10
+            spacing: 10
+            BoxLayout:
+                size_hint_y: None
+                height: "50dp"
+                spacing: 6
+                TextInput:
+                    id: search_input
+                    hint_text: "Rechercher un article..."
+                    multiline: False
+                    on_text: root.filter_articles(self.text)
+                Spinner:
+                    id: type_spinner
+                    text: "gros"
+                    values: ["gros","demi-gros","détail"]
+                TextInput:
+                    id: qty_input
+                    text: "1"
+                    size_hint_x: 0.2
+                    multiline: False
+                Button:
+                    text: "Ajouter au panier"
+                    background_color: 0.1,0.7,0.3,1
+                    on_release: root.add_to_cart()
+                Button:
+                    text: "Valider"
+                    background_color: 0.2,0.5,0.9,1
+                    on_release: root.validate_sale()
+            RecycleView:
+                id: rv_articles_v
+                viewclass: "Label"
+                RecycleBoxLayout:
+                    default_size: None, dp(40)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: 'vertical'
+            Label:
+                id: cart_label
+                text: "Panier vide"
+                size_hint_y: None
+                height: "40dp"
+
+<CaisseScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        ScreenTemplate:
+        BoxLayout:
+            orientation: "vertical"
+            padding: 10
+            spacing: 10
+            Label:
+                id: caisse_total
+                text: "Total du jour : 0 FCFA"
+                font_size: 20
+                bold: True
+            TextInput:
+                id: ticket_preview
+                readonly: True
+                size_hint_y: 0.6
+
+<ParamScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        ScreenTemplate:
+        GridLayout:
+            cols: 2
+            padding: 10
+            spacing: 8
+            Label:
+                text: "Nom société:"
+            TextInput:
+                id: societe_input
+            Label:
+                text: "Footer:"
+            TextInput:
+                id: footer_input
+            Label:
+                text: "Logo:"
+            BoxLayout:
+                orientation: "horizontal"
+                spacing: 6
+                Image:
+                    id: logo_preview
+                    source: root.logo_path if hasattr(root,'logo_path') else ''
+                    size_hint_x: 0.3
+                Button:
+                    text: "Choisir image"
+                    size_hint_x: 0.3
+                    on_release: root.choose_logo()
+            Label:
+                text: "Format ticket:"
+            Spinner:
+                id: format_spinner
+                text: "80"
+                values: ["80","58"]
+            Button:
+                text: "Enregistrer"
+                background_color: 0.2,0.5,0.9,1
+                on_release: root.save_params()
+            Button:
+                text: "Fermer"
+                background_color: 0.9,0.2,0.2,1
+                on_release: app.stop()
+
+<InventaireScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        ScreenTemplate:
+        RecycleView:
+            id: rv_inventory
+            viewclass: "Label"
+            RecycleBoxLayout:
+                default_size: None, dp(40)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+
+<HistoriqueScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        ScreenTemplate:
+        RecycleView:
+            id: rv_history
+            viewclass: "Label"
+            RecycleBoxLayout:
+                default_size: None, dp(40)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+
+<RapportScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        ScreenTemplate:
+        BoxLayout:
+            padding: 10
+            spacing: 6
+            TextInput:
+                id: start_date
+                hint_text: "YYYY-MM-DD"
+                multiline: False
+            TextInput:
+                id: end_date
+                hint_text: "YYYY-MM-DD"
+                multiline: False
+            Button:
+                text: "Générer"
+                background_color: 0.2,0.5,0.9,1
+                on_release: root.generate_report()
+            Button:
+                text: "Exporter PDF"
+                background_color: 0.3,0.7,0.3,1
+                on_release: root.export_pdf()
