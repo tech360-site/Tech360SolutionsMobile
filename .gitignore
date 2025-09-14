@@ -1,4 +1,35 @@
+# Fichiers Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+
+# Buildozer
 .buildozer/
 bin/
-__pycache__/
+
+# Virtualenv / pyenv
+.venv/
+venv/
+ENV/
+env/
+*.env
+.pyenv/
+
+# Logs
+*.log
+
+# OS spécifiques
+.DS_Store
+Thumbs.db
+
+# APK et fichiers générés
 *.apk
+*.aab
+
+# Autres caches
+*.swp
+*.swo
+*.tmp
+*.bak
+
